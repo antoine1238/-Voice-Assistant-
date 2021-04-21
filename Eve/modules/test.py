@@ -1,3 +1,6 @@
+# you can ignore this
+
+
 # from pygame import *
 
 # mixer.init()
@@ -7,13 +10,11 @@
 # while mixer.music.get_busy():
 #     time.Clock().tick(10)
 
-import os
-path = "C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/"
+# import os
 
 # os.system("youtube-dl.exe -x --audio-format mp3 https://www.youtube.com/watch?v=Ap-HeMIKi-c")
    
-if "musica.mp3" in os.listdir(path):
-    os.remove(path +"musica.mp3")
+
 
 # from playsound import playsound
 # playsound("C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/musica3.mp3")

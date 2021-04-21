@@ -1,7 +1,5 @@
 import speech_recognition as sr
 import pyttsx3
-import pywhatkit
-
 
 # Reconocimiento de voz
 name = "alexa"
@@ -14,13 +12,14 @@ engine.setProperty("voice", voices[0].id) # cambiamos la voz según el indice de
 
 
 def talk(rec):
-    """ Repite lo que le mandes """
+    """ Repeat what you send """
     print(rec)
     engine.say(rec)
     engine.runAndWait()
 
 
 def listen():
+    """ listen to what you say """
     while True:
         try:
             with sr.Microphone() as source:

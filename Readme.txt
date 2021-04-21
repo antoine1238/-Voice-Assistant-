@@ -8,4 +8,8 @@ este se descarga en https://ffmpeg.org/download.html .
 4) entrar en la carpeta bin y copiar la direccion de la carpeta 
 5) abrir las variables de entorno y dentro de path agregar esta ruta. y listo
 
-pip install pygame >>>> para poder reproducir la musica de fondo 
+pygame >>>> para poder reproducir la musica de fondo 
+
+
+speech_recognition >>> reconocimiento de voz
+pyttsx3 >>> para configurar la voz que usaremos como base 

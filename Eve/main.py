@@ -1,8 +1,10 @@
 # importaciones de funciones
-from modules.musica import find_url, download_video, play, stop
+from modules.music import find_url, download_video, play
 from modules.listen import listen, talk
 
+
 def run():
+    """ start """
     rec = listen()
 
     if "reproduce" in rec or "pon" in rec:
