@@ -10,9 +10,9 @@
 # while mixer.music.get_busy():
 #     time.Clock().tick(10)
 
-# import os
+import os
 
-# os.system("youtube-dl.exe -x --audio-format mp3 https://www.youtube.com/watch?v=Ap-HeMIKi-c")
+os.system("youtube-dl.exe -x  https://www.youtube.com/watch?v=5skBr_96dPc&list=RD5skBr_96dPc&")
    
 
 
@@ -52,3 +52,10 @@
 #         ydl.download([url_video])
 #         # if "musica.ogg" in os.listdir("C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/"):
 #         #     os.remove("C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/musica.ogg")
+
+# string = "a partir de mañana todo estará mejor"
+# text = string.split("mañana")[0]
+# text_2 = string.split("mañana")[1]
+
+# print(f"****** {text} ******")
+# print(f"****** {text_2} ******")

@@ -29,9 +29,21 @@ def listen():
                 rec = rec.lower()
                 print(rec)
                 if name in rec: # si encuentra su nombre en el audio, actuará
-                    rec = rec.replace(name, "") # quitamos el nombre de nuestro audio
+                    rec = rec.split(name)[1] # quitamos el nombre de nuestro audio
                     return rec  
         except:
             pass
 
     
+def listen_light():
+    """ listen to what you say """
+    while True:
+        try:
+            with sr.Microphone() as source:
+                print("Escuchando...")
+                voice = listener.listen(source) 
+                rec = listener.recognize_google(voice, language="es-ES") 
+                rec = rec.lower()
+                print(rec)
+        except:
+            pass

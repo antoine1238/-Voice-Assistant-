@@ -9,7 +9,14 @@ from .listen import listen, talk
 # pygame init
 mixer.init()
 
-path = "C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/musica.mp3"
+# My music path
+path = "C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/musica.opus"
+
+# Conditionals variables
+quitar = ["cierra la música", "quita la música", "cancela"]
+reanudar = ["play", "reanuda"]
+pause = ["silencio", "pause", "pausa"]
+
 
 def play():
     """ Music control """
@@ -19,15 +26,35 @@ def play():
     while mixer.music.get_busy():
         time.Clock().tick(10)
         voz = listen()
-        if "silencio" in voz or "pause" in voz:
-            mixer.music.stop()
+
+        if quitar[0] in voz or quitar[1] in voz or quitar[2] in voz:
+            mixer.music.stop() 
+            return talk("musica quitada")
+
+        if pause[0] in voz or pause[1] in voz or pause[2] in voz:
+            mixer.music.pause()
+            
+            while True: 
+                voz = listen()
+                if pause[0] in voz or pause[1] in voz or pause[2] in voz:
+                    if not mixer.music.get_busy():
+                        talk("ya esta en pausa la musica")
+                    else:
+                        mixer.music.pause()
+
+                if reanudar[0] in voz or reanudar[1] in voz:
+                    mixer.music.unpause()
+
+                if quitar[0] in voz or quitar[1] in voz or quitar[2] in voz:
+                    mixer.music.stop() 
+                    return talk("musica quitada")
 
 
 def download_video(url_video):
     """ Download the video but in mp3 format """
-    if "musica.mp3" in os.listdir(path.replace("musica.mp3", "")):
+    if "musica.opus" in os.listdir(path.replace("musica.opus", "")):
         os.remove(path)
-    os.system(f"youtube-dl.exe -x --audio-format mp3 {url_video}")
+    os.system(f"youtube-dl.exe -x {url_video}")
 
     
 def find_url(search):
@@ -45,3 +72,5 @@ def main():
     url_video = find_url(search)
     download_video(url_video)
     play()
+
+# main()
