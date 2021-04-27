@@ -1,23 +1,37 @@
-# you can ignore this
+# # you can ignore this
 
 
+# https://www.youtube.com/watch?v=EgBJmlPo8Xw
+# import os
+
+# os.system("youtube-dl.exe -x --audio-format mp3 --encoding UTF-8 https://www.youtube.com/watch?v=EgBJmlPo8Xw")
+
+# from playsound import playsound
+# playsound("C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/musica.mp3")
+   
 # from pygame import *
 
 # mixer.init()
-# mixer.music.load("C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/musica3.mp3")
-# mixer.music.play()
+
+# try:
+#     mixer.music.load("C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/musica.m4a")
+#     mixer.music.play()
+#     print("m4a")
+# except:
+#     pass
+    
+# try:
+#     mixer.music.load("C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/musica.mp3")
+#     mixer.music.play()
+#     print("mp3")
+# except:
+#     mixer.music.load("C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/musica.opus")
+#     mixer.music.play()
+#     print("opus")
 
 # while mixer.music.get_busy():
-#     time.Clock().tick(10)
+    # time.Clock().tick(10)
 
-import os
-
-os.system("youtube-dl.exe -x  https://www.youtube.com/watch?v=5skBr_96dPc&list=RD5skBr_96dPc&")
-   
-
-
-# from playsound import playsound
-# playsound("C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/musica3.mp3")
 
 # C:/Users/antoi.DESKTOP-26ARF9V/Downloads/%(title)s.%(ext)s
 # C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/%(title)s.%(ext)s
@@ -58,4 +72,29 @@ os.system("youtube-dl.exe -x  https://www.youtube.com/watch?v=5skBr_96dPc&list=R
 # text_2 = string.split("mañana")[1]
 
 # print(f"****** {text} ******")
-# print(f"****** {text_2} ******")
+# # print(f"****** {text_2} ******")
+
+
+# import os
+
+# archivos = os.listdir("C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/")
+# cancion = input("dime la cacion: ")
+# for i in archivos:
+#     archivos2 = i.split(".mp3")[0].split("(")[0]
+#     if cancion in archivos2:
+#         print(archivos2)
+
+import os
+
+search = input("dame nombre: ")
+path = "C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/musica.mp3" 
+# new_path = f"C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/{search}.mp3" 
+# os.rename(path, new_path)
+
+files = os.listdir(path.replace("musica.mp3", ""))
+print(files)
+
+for i in files:
+    if i == f"{search}.mp3":
+        print("funciona")
+        break

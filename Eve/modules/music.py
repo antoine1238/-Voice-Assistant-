@@ -6,21 +6,27 @@ import os
 # importacion de modulos
 from .listen import listen, talk
 
-# pygame init
-mixer.init()
-
 # My music path
-path = "C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/musica.opus"
+path = "C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/musica.mp3"
 
 # Conditionals variables
 quitar = ["cierra la música", "quita la música", "cancela"]
 reanudar = ["play", "reanuda"]
 pause = ["silencio", "pause", "pausa"]
 
+def play_in_dir(search):
+    files = os.listdir(path.replace("musica.mp3", ""))
+    for music in files:
+        if music == f"{search}.mp3":
+            play(search)
+            return True
+    return False
 
-def play():
+
+def play(search):
     """ Music control """
-    mixer.music.load(path)
+    mixer.init()
+    mixer.music.load(path.replace("musica.mp3", f"{search}.mp3"))
     mixer.music.play()
 
     while mixer.music.get_busy():
@@ -29,6 +35,7 @@ def play():
 
         if quitar[0] in voz or quitar[1] in voz or quitar[2] in voz:
             mixer.music.stop() 
+            mixer.quit()
             return talk("musica quitada")
 
         if pause[0] in voz or pause[1] in voz or pause[2] in voz:
@@ -47,14 +54,19 @@ def play():
 
                 if quitar[0] in voz or quitar[1] in voz or quitar[2] in voz:
                     mixer.music.stop() 
+                    mixer.quit()
                     return talk("musica quitada")
 
 
-def download_video(url_video):
+def download_video(url_video, search):
     """ Download the video but in mp3 format """
-    if "musica.opus" in os.listdir(path.replace("musica.opus", "")):
-        os.remove(path)
-    os.system(f"youtube-dl.exe -x {url_video}")
+    os.system(f"youtube-dl.exe -x --audio-format mp3 {url_video}")
+
+    # Rename file
+    path = "C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/musica.mp3" 
+    new_path = f"C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/{search}.mp3" 
+    os.rename(path, new_path)
+
 
     
 def find_url(search):
@@ -69,8 +81,11 @@ def find_url(search):
 def main():
     """ Execution control for test """
     search = input("que música quieres reproducir: ")
-    url_video = find_url(search)
-    download_video(url_video)
-    play()
+    try:
+        music_file = play_in_dir(search)
+    except:
+        url_video = find_url(search)
+        download_video(url_video, search)
+        play(search)
 
 # main()
