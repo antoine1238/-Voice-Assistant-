@@ -84,17 +84,17 @@
 #     if cancion in archivos2:
 #         print(archivos2)
 
-import os
+# import os
 
-search = input("dame nombre: ")
-path = "C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/musica.mp3" 
-# new_path = f"C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/{search}.mp3" 
-# os.rename(path, new_path)
+# search = input("dame nombre: ")
+# path = "C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/musica.mp3" 
+# # new_path = f"C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/{search}.mp3" 
+# # os.rename(path, new_path)
 
-files = os.listdir(path.replace("musica.mp3", ""))
-print(files)
+# files = os.listdir(path.replace("musica.mp3", ""))
+# print(files)
 
-for i in files:
-    if i == f"{search}.mp3":
-        print("funciona")
-        break
+# for i in files:
+#     if i == f"{search}.mp3":
+#         print("funciona")
+#         break

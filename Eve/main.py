@@ -6,30 +6,25 @@ import time
 
 def Eve():
     """ start """
-    talk("Te escucho")
     while True: 
         rec = listen()
     
         if "reproduce" in rec or "pon" in rec:
             if "reproduce" in rec:
-                music = rec.split("reproduce")[1].strip()
+                music = rec.replace("reproduce", "").strip()
             else:
-                music = rec.split("pon")[1].strip()           
+                music = rec.replace("pon", "").strip()
 
-            try:
-                exist = play_in_dir(music)
-            except:
-                pass
+            talk("reproduciendo " + music)
 
+            exist = play_in_dir(music)
             if exist == True:
-                talk("Reproduciendo" + music)
-                play_in_dir(music)
-                return 
-
-            url_search = find_url(music)
-            download_video(url_search, music)
-            print(url_search)
-            play(music)
+                pass
+            else:
+                url_search = find_url(music)
+                download_video(url_search, music)
+                print(url_search)
+                play(music)
             
         elif "muéstrame la lista" in rec:
             lista = ["antoine", "jesus roberto", "junior jesus", "emelin"]
