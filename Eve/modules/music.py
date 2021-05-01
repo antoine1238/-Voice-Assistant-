@@ -14,6 +14,7 @@ close = ["cierra la música", "quita la música", "cancela"]
 resume = ["play", "reanuda"]
 pause = ["silencio", "pause", "pausa"]
 
+
 def play_in_dir(search):
     files = os.listdir(path.replace("musica.mp3", ""))
     for music in files:
@@ -54,7 +55,6 @@ def play(search):
                 return talk("musica quitada")
 
 
-
 def download_video(url_video, search):
     """ Download the video but in mp3 format """
     os.system(f"youtube-dl.exe -x --audio-format mp3 {url_video}")
@@ -63,7 +63,6 @@ def download_video(url_video, search):
     path = "C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/musica.mp3" 
     new_path = f"C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/{search}.mp3" 
     os.rename(path, new_path)
-
 
     
 def find_url(search):

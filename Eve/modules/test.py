@@ -98,3 +98,32 @@
 #     if i == f"{search}.mp3":
 #         print("funciona")
 #         break
+
+
+# from listen import talk
+# import wikipedia
+
+# # lenguaje
+# wikipedia.set_lang("es")
+
+# # contenido resumido, dependiendo de el valor de sentences, este será mas o menos largo
+# data = wikipedia.summary("coldplay", sentences=3)
+
+# # mas especificos
+# dat = wikipedia.page("Coldplay")
+# title = dat.title
+# url = dat.url
+# content = dat.content
+# links = dat.links
+
+# print(data)
+
+from datetime import datetime
+from datetime import date
+now = datetime.now()
+today = date.today()
+
+
+print(now)
+print("******")
+print(today)

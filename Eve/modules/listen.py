@@ -27,10 +27,10 @@ def listen():
                 voice = listener.listen(source) # convierte lo que dije en un audio
                 rec = listener.recognize_google(voice, language="es-ES") # traduce lo que esta en el audio. 
                 rec = rec.lower()
-                print(rec)
                 if name in rec: # si encuentra su nombre en el audio, actuará
-                    rec = rec.split(name)[1] # quitamos el nombre de nuestro audio
-                    return rec  
+                    rec = rec.split(name)[1].strip() # quitamos el nombre de nuestro audio
+                    print(rec)
+                    return rec
         except:
             pass
 
