@@ -37,13 +37,13 @@ def listen():
     
 def listen_light():
     """ listen to what you say """
-    while True:
-        try:
-            with sr.Microphone() as source:
-                print("Escuchando...")
-                voice = listener.listen(source) 
-                rec = listener.recognize_google(voice, language="es-ES") 
-                rec = rec.lower()
-                print(rec)
-        except:
-            pass
+    try:
+        with sr.Microphone() as source:
+            print("Escuchando...")
+            voice = listener.listen(source) 
+            rec = listener.recognize_google(voice, language="es-ES") 
+            rec = rec.lower()
+            print(rec)
+            return rec
+    except:
+        pass

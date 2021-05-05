@@ -7,6 +7,8 @@ este se descarga en https://ffmpeg.org/download.html .
 5) abrir las variables de entorno y dentro de path agregar esta ruta. y listo
 
 pygame              >>>> para poder reproducir la musica de fondo 
+youtube_dl          >>>> para descargar las musicas de youtube
 urllib              >>>> para obtener la url de la musica 
 speech_recognition  >>>> reconocimiento de voz
 pyttsx3             >>>> para configurar la voz que usaremos como base 
+wikipedia           >>>> para busquedas sencillas en wikipedia

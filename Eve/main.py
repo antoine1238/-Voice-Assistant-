@@ -1,6 +1,7 @@
 # importaciones de funciones
 from modules.music import find_url, download_video, play, play_in_dir
 from modules.listen import listen, listen_light, talk
+from modules.data import Data
 
 import time
 
@@ -22,37 +23,98 @@ def Eve():
 
         # Music
         if "reproduce" in rec or "pon" in rec:
-            if "reproduce" in rec:
-                music = rec.replace("reproduce", "").strip()
+            if rec == "pon" or rec == "reproduce":
+                continue
             else:
-                music = rec.replace("pon", "").strip()
+                if "reproduce" in rec:
+                    music = rec.replace("reproduce", "").strip()
+                else:
+                    music = rec.replace("pon", "").strip()
 
-            talk("reproduciendo " + music)
+                talk("reproduciendo " + music)
 
-            exist = play_in_dir(music)
-            if exist == True:
-                pass
-            else:
-                url_search = find_url(music)
-                download_video(url_search, music)
-                print(url_search)
-                play(music)
+                exist = play_in_dir(music)
+                if exist == True:
+                    pass
+                else:
+                    url_search = find_url(music)
+                    download_video(url_search, music)
+                    print(url_search)
+                    play(music)
 
-            
-        elif "muéstrame la lista" in rec:
-            pass
+        # List creation
+        elif rec == "muéstrame la lista" or rec == "abre la lista":
+            talk("listo, que quieres hacer")
 
-
-        elif "crear lista" in rec: 
-            talk("quieres agregar datos o crear una lista nueva")
             while True:
                 rec = listen_light()
-                if "agregar" in rec:
+
+                # Creation
+                if rec == "crear":
+                    talk("como se va a llamar la lista")
+                    name = listen_light()
+                    talk(f"{name}. te parece bien el nombre?")
+
+                    while True:
+                        confirm = listen_light()    
+
+                        if confirm == "si":
+                            break
+                        elif confirm == "no":
+                            while confirm == "no":
+                                talk("vale, dime el nombre que quieres ponerle")
+                                name = listen_light()
+                                talk(f"{name}. te parece bien el nombre?")
+                                confirm = listen_light()    
+                            break
+                        else: 
+                            talk("no te he entendido, intenta de nuevo")
+
+                    talk(f"que quieres poner dentro de la lista {name}?")
+                    content = listen_light()
+                    Data.create(name, content)
+                    talk("listo, quieres que lea tu lista?")
+
+                    while True:
+                        lead = listen_light()
+
+                        if lead == "si":
+                            talk(f"{name}: {content}")
+                            break
+                        elif lead == "no":
+                            break
+                        else: 
+                            talk("no te he entendido, intenta de nuevo")
+                    break
+                
+                # List
+                elif rec == "listar":
+                    pass 
+
+                # Add
+                elif rec == "agregar":
                     pass
-                if "crear" in rec:
+
+                # Delete
+                elif rec == "eliminar":
                     pass
-                if "cancela" in rec or "cancelar" in rec:
-                    return talk("cancelando operación")
+
+                # Help
+                elif rec == "qué puedes hacer":
+                    talk("""
+                        1: crear una tabla con datos dentro, 
+                        2: añadir datos a una tabla existente, 
+                        3: listar datos de una tabla, 
+                        4: eliminar una un dato o toda la tabla si prefieres
+                    """)
+                
+                # Quit
+                elif "cancela" in rec or "cancelar" in rec:
+                    talk("cancelando operación")
+                    break
+                else:
+                    talk("no te he entendido, intenta de nuevo")
+                
 
 
         # Wikipedia searches
@@ -70,7 +132,7 @@ def Eve():
             talk(data)
 
         # Time
-        elif "qué hora es" in rec or "qué dia es hoy":
+        elif rec == "qué hora es" or rec == "qué dia es hoy":
             if "qué hora es" in rec:
                 hour = f"son las {now.hour} con {now.minute} minutos"
             else:
@@ -81,7 +143,7 @@ def Eve():
         
 
         # Close
-        elif "ciérrate" in rec:
+        elif rec == "ciérrate":
             exit()
         
         else:

@@ -1,6 +1,8 @@
 # # you can ignore this
 
 
+
+
 # https://www.youtube.com/watch?v=EgBJmlPo8Xw
 # import os
 
@@ -118,12 +120,11 @@
 
 # print(data)
 
-from datetime import datetime
-from datetime import date
-now = datetime.now()
-today = date.today()
+# import os 
 
+# path = "C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/Data"
 
-print(now)
-print("******")
-print(today)
+# file_csv = open(f"{path}/antoine.csv", "w")
+# file_csv.write("Primera línea" + os.linesep)
+# file_csv.write("Segunda línea")
+# file_csv.close()
