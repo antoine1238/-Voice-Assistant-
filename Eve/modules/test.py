@@ -1,7 +1,8 @@
 # # you can ignore this
 
 
-
+import os
+path_data = "C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/Data"
 
 # https://www.youtube.com/watch?v=EgBJmlPo8Xw
 # import os
@@ -122,9 +123,20 @@
 
 # import os 
 
-# path = "C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/Data"
 
 # file_csv = open(f"{path}/antoine.csv", "w")
 # file_csv.write("Primera línea" + os.linesep)
 # file_csv.write("Segunda línea")
 # file_csv.close()
+
+# import os 
+
+# files = []
+# def files_in_dir():
+#     search = os.listdir(path)
+#     for i in search:
+#         files.append(i)
+
+# files_in_dir()
+
+# print(files)

@@ -1,7 +1,7 @@
 # importaciones de funciones
 from modules.music import find_url, download_video, play, play_in_dir
 from modules.listen import listen, listen_light, talk
-from modules.data import Data
+from modules.data import Data, main_data
 
 import time
 
@@ -18,8 +18,8 @@ months = ("Enero", "Febrero", "Marzo", "Abri", "Mayo", "Junio", "Julio", "Agosto
 def Eve():
     """ start """
     while True: 
-        rec = listen()
-        # rec = input("comand: ") # for test
+        # rec = listen()
+        rec = input("comand: ") # for test
 
         # Music
         if "reproduce" in rec or "pon" in rec:
@@ -45,76 +45,7 @@ def Eve():
         # List creation
         elif rec == "muéstrame la lista" or rec == "abre la lista":
             talk("listo, que quieres hacer")
-
-            while True:
-                rec = listen_light()
-
-                # Creation
-                if rec == "crear":
-                    talk("como se va a llamar la lista")
-                    name = listen_light()
-                    talk(f"{name}. te parece bien el nombre?")
-
-                    while True:
-                        confirm = listen_light()    
-
-                        if confirm == "si":
-                            break
-                        elif confirm == "no":
-                            while confirm == "no":
-                                talk("vale, dime el nombre que quieres ponerle")
-                                name = listen_light()
-                                talk(f"{name}. te parece bien el nombre?")
-                                confirm = listen_light()    
-                            break
-                        else: 
-                            talk("no te he entendido, intenta de nuevo")
-
-                    talk(f"que quieres poner dentro de la lista {name}?")
-                    content = listen_light()
-                    Data.create(name, content)
-                    talk("listo, quieres que lea tu lista?")
-
-                    while True:
-                        lead = listen_light()
-
-                        if lead == "si":
-                            talk(f"{name}: {content}")
-                            break
-                        elif lead == "no":
-                            break
-                        else: 
-                            talk("no te he entendido, intenta de nuevo")
-                    break
-                
-                # List
-                elif rec == "listar":
-                    pass 
-
-                # Add
-                elif rec == "agregar":
-                    pass
-
-                # Delete
-                elif rec == "eliminar":
-                    pass
-
-                # Help
-                elif rec == "qué puedes hacer":
-                    talk("""
-                        1: crear una tabla con datos dentro, 
-                        2: añadir datos a una tabla existente, 
-                        3: listar datos de una tabla, 
-                        4: eliminar una un dato o toda la tabla si prefieres
-                    """)
-                
-                # Quit
-                elif "cancela" in rec or "cancelar" in rec:
-                    talk("cancelando operación")
-                    break
-                else:
-                    talk("no te he entendido, intenta de nuevo")
-                
+            main_data()
 
 
         # Wikipedia searches
@@ -127,9 +58,29 @@ def Eve():
                 search = rec.replace("qué es la ", "")     
             else:
                 search = rec.replace("qué es ", "")
+            
+            talk(f"cuanto quieres que te lea sobre {search}")
+            
+            while True:
+                question = listen_light()
 
-            data = wikipedia.summary(search, sentences=2)
-            talk(data)
+                if not question:
+                    continue
+                
+                if question == "bastante" or question == "mucho" or question == "demasiado":
+                    amount = 7
+                elif question == "no demasiado" or question == "mas o menos":
+                    amount = 3
+                elif question == "un poco" or question == "poco" or question == "poquito":
+                    amount = 2
+                elif question == "muy poco":
+                    amount = 1
+                else:
+                    talk("no te he entendido, vuelve a intentarlo")
+                    
+                data = wikipedia.summary(search, sentences=amount)
+                talk(data)
+                break
 
         # Time
         elif rec == "qué hora es" or rec == "qué dia es hoy":
@@ -141,6 +92,13 @@ def Eve():
 
             talk(hour)
         
+        elif rec == "qué puedes hacer":
+            talk("""vale: 
+                puedo descargar la musica que me digas y luego reproducirla, ya una vez descargada puedes reproducirla instantaneamente en otro momento si prefieres.
+                puedo hacer las busquedas que quieras y usaré wikipedia para leerte sus conceptos, según me indiques puedo leerte mucho o poco.
+                puedo crear listas para guardar texto dentro y cuando quieras tambien puedo leertelas, agregarle mas contenido o eliminarlas si prefieres.
+                puedo hacer funciones básicas como dar la hora actual o en que dia estamos.
+             """)
 
         # Close
         elif rec == "ciérrate":
