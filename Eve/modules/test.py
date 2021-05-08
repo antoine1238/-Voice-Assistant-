@@ -1,4 +1,4 @@
-# # you can ignore this
+# # you can ignore this. here I do experiments, it's very messy
 
 
 import os
@@ -140,3 +140,23 @@ path_data = "C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/Data"
 # files_in_dir()
 
 # print(files)
+
+f = open(f"{path_data}/naruto.csv", "r")
+data = f.read().replace("\n", "").split("-")[1:]
+borrado = input("que quieres borrar: ")
+lista = []
+
+for i in data:
+    if borrado == i:
+        print("borrado total")
+    elif borrado[:5] == i[:5]:
+        print(f"borrado completo de la lista {i}")
+    else:
+        print("nope..")
+        lista.append(i)
+
+if lista == data:
+    print("no hemos conseguido la lista que mencionaste")
+
+print(data)
+print(lista)

@@ -3,6 +3,7 @@ from modules.music import find_url, download_video, play, play_in_dir
 from modules.listen import listen, listen_light, talk
 from modules.data import Data, main_data
 
+# python lib
 import time
 
 # Wikipedia
@@ -18,8 +19,7 @@ months = ("Enero", "Febrero", "Marzo", "Abri", "Mayo", "Junio", "Julio", "Agosto
 def Eve():
     """ start """
     while True: 
-        # rec = listen()
-        rec = input("comand: ") # for test
+        rec = listen()
 
         # Music
         if "reproduce" in rec or "pon" in rec:
@@ -92,6 +92,7 @@ def Eve():
 
             talk(hour)
         
+        # Help
         elif rec == "qué puedes hacer":
             talk("""vale: 
                 puedo descargar la musica que me digas y luego reproducirla, ya una vez descargada puedes reproducirla instantaneamente en otro momento si prefieres.

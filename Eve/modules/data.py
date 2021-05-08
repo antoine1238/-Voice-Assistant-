@@ -1,6 +1,9 @@
 """ here is the logic behind creating tables with our VA """
 
+# modules
 from .listen import talk, listen_light
+
+# python lib
 import os
 
 # My data path
@@ -23,7 +26,8 @@ def files_in_dir(doc):
 def main_data():
     """ Main loop"""
     while True:
-        rec = listen_light()
+        # rec = listen_light()
+        rec = input("comand: ")
 
         if not rec:
             continue
@@ -32,6 +36,14 @@ def main_data():
         if rec == "crear":
             talk("como se va a llamar la lista")
             name = listen_light()
+
+            while not name:
+                name = listen_light()
+
+            # exit
+            if name == "cancela" or name == "cancelar":
+                talk("operacion cancelada")
+                break
 
             # Check if it exists
             verify = files_in_dir(name)
@@ -49,7 +61,8 @@ def main_data():
                 confirm = listen_light()    
 
                 if confirm == "cancela":
-                    return talk("proceso cancelado")
+                    talk("proceso cancelado")
+                    break
 
                 if confirm == "si":
                     break
@@ -99,7 +112,10 @@ def main_data():
             talk("dime la lista a la que le quieres agregar datos")
             while True:
                 name = listen_light()
-                confirm = False
+
+                if name == "cancela" or name == "cancelar":
+                    talk("operacion cancelada")
+                    break
 
                 # Check if it exists 
                 for i in files:
@@ -108,7 +124,7 @@ def main_data():
                         confirm = True
                         break
                     else:
-                        pass
+                        confirm = False 
                 
                 # if it exists, ask the content and add it
                 if confirm == True:
@@ -124,8 +140,17 @@ def main_data():
                         read = listen_light()
 
                         if read == "si":
-                            talk("leyendo :s")
-                            break
+                            Data.read(name)
+                            talk("quieres que lo lea de nuevo?")
+                            while True:
+                                choice = listen_light()
+                                if choice == "si":
+                                    Data.read(name)
+                                elif choice == "no":
+                                    return
+                                else:
+                                    talk("no te he entendido, intenta de nuevo")
+                            
                         elif read == "no":
                             break
                         else:
@@ -136,10 +161,135 @@ def main_data():
                 else:
                     talk("no he encontrado el archivo que indicas")
 
-        # DELETE
-        elif rec == "eliminar":
-            pass
+        # READ 
+        elif rec == "lectura" or rec == "leer un archivo" or rec == "leer archivo":
+            talk("que archivo quieres revisar")
+            name = listen_light()
 
+            while not name:
+                name = listen_light()
+            
+            # exit
+            if name == "cancela" or name == "cancelar":
+                talk("operacion cancelada")
+                break
+            
+            for i in files:
+                if name == i.replace(".csv", ""):
+                    confirm = True
+                    break
+                else:
+                    confirm = False 
+            
+            if confirm == True:
+                Data.read(name)
+                talk("quieres que lo lea de nuevo?")
+                while True:
+                    choice = listen_light()
+
+                    # exit
+                    if choice == "cancela" or choice == "cancelar":
+                        talk("operacion cancelada")
+                        break
+
+                    if choice == "si":
+                        Data.read(name)
+                    elif choice == "no":
+                        return
+                    else:
+                        talk("no te he entendido, intenta de nuevo")
+            else:
+                talk("ese archivo no existe, vuelve a intentarlo")
+            
+
+        # DELETE
+        elif rec == "eliminar" or rec == "eliminación" or rec == "borrar" or rec == "borrado":   
+            talk("vale, dime el nombre de la lista a eliminar") 
+
+            while True:
+                name = listen_light()
+
+                while not name:
+                    name = listen_light()
+
+    
+                for i in files:
+                    if name == i.replace(".csv", ""):
+                        confirm = True
+                        break
+                    else:
+                        confirm = False 
+
+                # exit
+                if name == "cancela" or name == "cancelar":
+                    talk("operacion cancelada")
+                    return
+
+                if confirm == True:
+                    talk("quieres borrar la lista completa o sólo una parte")
+
+                    while True:
+                        choice = listen_light()
+
+                        while not choice:
+                            choice = listen_light()
+
+                        # exit
+                        if choice == "cancela" or choice == "cancelar":
+                            talk("operacion cancelada")
+                            return
+
+                        # full erase
+                        elif choice == "borrado completo" or choice == "borrar todo" or choice == "borrarlo todo" or choice == "completa":
+                            Data.delete(name)
+                            talk("la lista ha sido borrada")
+                            return
+
+                        # delete a part
+                        elif choice == "borrar una parte" or choice == "borrar un pedazo" or choice == "una parte" or choice == "solo una parte":
+                            talk("ok, dime como empieza")
+
+                            while True:
+                                starts = listen_light()
+
+                                while not starts:
+                                    starts = listen_light()
+
+
+                                # exit
+                                if starts == "cancela" or starts == "cancelar":
+                                    talk("operacion cancelada")
+                                    return
+                                
+                                exist = Data.update(name, starts)
+
+                                if exist == False:
+                                    talk("no he conseguido ese dato dentro de la lista, vuelve a intentarlo")
+                                    while exist == False:
+                                        starts = listen_light()
+
+                                        exist = Data.update(name, starts)
+
+                                        if exist == True:
+                                            talk("eliminación completa")
+                                            return
+                                        
+                                        else:
+                                            talk("no he conseguido ese dato dentro de la lista, vuelve a intentarlo")
+
+                                    # exit
+                                    if exist == "cancela" or exist == "cancelar":
+                                        talk("operacion cancelada")
+                                        return
+                                else: 
+                                    talk("eliminacion completa")
+                                return                                             
+                        else:
+                            talk("no te he entendido, vuelve a intentarlo")
+                else:
+                    talk("ese archivo no existe, vuelve a intentarlo")
+
+        
         # HELP
         elif rec == "qué puedes hacer":
             talk("""
@@ -163,9 +313,9 @@ class Data:
     """ CRUD manager """
 
     def create(name, content):
-        file_csv = open(f"{path}/{name}.csv", "w")
-        file_csv.write(f"{content}" + os.linesep)
-        file_csv.close()
+        doc = open(f"{path}/{name}.csv", "w")
+        doc.write(f"-{content}" + os.linesep)
+        doc.close()
 
     def to_list():
         number_files = len(files)
@@ -174,16 +324,46 @@ class Data:
             talk(i.replace(".csv", ""))
 
     def add(name, content):
-        save = open(f"{path}/{name}.csv", "a", encoding="utf-8")
-        save.write(content + os.linesep)
-        save.close()
+        doc = open(f"{path}/{name}.csv", "a", encoding="utf-8")
+        doc.write(f"-{content}" + os.linesep)
+        doc.close()
 
-    def delete():
-        print("delete")
+    def read(name):
+        doc = open(f"{path}/{name}.csv")
+        text = doc.read()
+        talk(text)
+        doc.close()
 
+    def delete(name):
+        os.remove(f"{path}/{name}.csv")
 
-    def update():
-        print("update")
+    def update(name, starts):
+        doc = open(f"{path}/{name}.csv", "r")
+        text = doc.read().replace("\n", "").split("-")[1:]
+        new_doc = []
+        
+        for i in text:
+            if starts == i:
+                print(f"borrado total: {i}")
+            elif starts[:15] == i[:15]:
+                print(f"borrado por como empieza: {i}")
+            elif starts[:10] == i[:10]:
+                print(f"borrado por como empieza: {i}")
+            elif starts[:5] == i[:5]:
+                print(f"borrado por como empieza: {i}")
+            else:
+                new_doc.append(i)
+
+        doc.close()
+
+        if text == new_doc:
+            return False
+        else: 
+            Data.delete(name)
+            for i in new_doc: 
+                Data.add(name, i)
+
+        return True       
 
 
 # main_data()
