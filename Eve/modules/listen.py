@@ -17,6 +17,9 @@ def talk(rec):
     engine.say(rec)
     engine.runAndWait()
 
+def stop():
+    engine.stop()
+
 
 def listen():
     """ listen to what you say """
@@ -42,7 +45,7 @@ def listen_light():
             print("Escuchando...")
             voice = listener.listen(source) 
             rec = listener.recognize_google(voice, language="es-ES") 
-            rec = rec.lower()
+            rec = rec.lower().strip()
             print(rec)
             return rec
     except:

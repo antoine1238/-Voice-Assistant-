@@ -1,6 +1,7 @@
 # # you can ignore this. here I do experiments, it's very messy
 
-
+from listen import listen, listen_light, talk, stop
+# from data import Data, name_files
 import os
 path_data = "C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/Data"
 
@@ -141,22 +142,38 @@ path_data = "C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/Data"
 
 # print(files)
 
-f = open(f"{path_data}/naruto.csv", "r")
-data = f.read().replace("\n", "").split("-")[1:]
-borrado = input("que quieres borrar: ")
-lista = []
+# f = open(f"{path_data}/naruto.csv", "r")
+# data = f.read().replace("\n", "").split("-")[1:]
+# borrado = input("que quieres borrar: ")
+# lista = []
 
-for i in data:
-    if borrado == i:
-        print("borrado total")
-    elif borrado[:5] == i[:5]:
-        print(f"borrado completo de la lista {i}")
-    else:
-        print("nope..")
-        lista.append(i)
+# for i in data:
+#     if borrado == i:
+#         print("borrado total")
+#     elif borrado[:5] == i[:5]:
+#         print(f"borrado completo de la lista {i}")
+#     else:
+#         print("nope..")
+#         lista.append(i)
 
-if lista == data:
-    print("no hemos conseguido la lista que mencionaste")
+#     if lista == data:
+#         print("no hemos conseguido la lista que mencionaste")
 
-print(data)
-print(lista)
+# print(data)
+# print(lista)
+
+# import threading
+# import time
+# import logging
+
+
+# def daemon():
+#     talk("Usar argumentos para identificar o nombrar el hilo es engorroso e innecesario. Usar argumentos para identificar o nombrar el hilo es engorroso e innecesario.Usar argumentos para identificar o nombrar el hilo es engorroso e innecesario.Usar argumentos para identificar o nombrar el hilo es engorroso e innecesario.")
+
+# def non_daemon():
+#     content = listen_light()
+#     print(content)
+
+# t = threading.Thread(name='non-daemon', target=non_daemon)
+# t.start()
+# daemon()
