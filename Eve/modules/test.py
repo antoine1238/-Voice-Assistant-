@@ -1,10 +1,10 @@
 # # you can ignore this. here I do experiments, it's very messy
 
-from listen import listen, listen_light, talk, stop
-# from data import Data, name_files
+from listen import talk
 import os
 path_data = "C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/Data"
 
+talk("Usar argumentos para identificar o nombrar el hilo es engorroso e innecesario. Usar argumentos para identificar o nombrar el hilo es engorroso e innecesario")
 # https://www.youtube.com/watch?v=EgBJmlPo8Xw
 # import os
 
@@ -18,7 +18,7 @@ path_data = "C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/Data"
 # mixer.init()
 
 # try:
-#     mixer.music.load("C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/music/musica.m4a")
+#     mixer.music.load("C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/E<scritorio/AV Eve/Eve/music/musica.m4a")
 #     mixer.music.play()
 #     print("m4a")
 # except:
@@ -166,14 +166,68 @@ path_data = "C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/Data"
 # import time
 # import logging
 
+# import speech_recognition as sr
+# import pyttsx3
+# # Reconocimiento de voz
+# name = "alexa"
+# listener = sr.Recognizer()  # Para reconocer la voz
+
+# # Configuración de Voz 
+# engine = pyttsx3.init()
+# voices = engine.getProperty("voices") # obtenemos una lista con todas las voces. son 3 en total 
+# engine.setProperty("voice", voices[0].id) # cambiamos la voz según el indice de la lista
+
+
+# def talk(rec):
+#     """ Repeat what you send """
+#     print(rec)
+#     engine.say(rec)
+#     engine.runAndWait()
 
 # def daemon():
-#     talk("Usar argumentos para identificar o nombrar el hilo es engorroso e innecesario. Usar argumentos para identificar o nombrar el hilo es engorroso e innecesario.Usar argumentos para identificar o nombrar el hilo es engorroso e innecesario.Usar argumentos para identificar o nombrar el hilo es engorroso e innecesario.")
+#     talk("Usar argumentos para identificar o nombrar el hilo es engorroso e innecesario. Usar argumentos para identificar o nombrar el hilo es engorroso e innecesario")
+
+# def stoped():
+#     engine.
+
 
 # def non_daemon():
-#     content = listen_light()
+#     content = input("palabra: ")
 #     print(content)
+#     if content == "asd":
+#         print("funciona el if")
+#         stoped()
 
 # t = threading.Thread(name='non-daemon', target=non_daemon)
+# d = threading.Thread(name='daemon', target=daemon)
+# s = threading.Thread(name='daemon', target=stoped)
+# d.start()
 # t.start()
-# daemon()
+
+
+
+# import multiprocessing
+# import pyttsx3
+
+# def say(phrase):
+#     print(phrase)
+#     engine = pyttsx3.init()
+#     engine.setProperty('rate', 160)
+#     engine.say(phrase)
+#     engine.runAndWait()
+
+# def talk(phrase):
+#     if __name__ == "__main__":
+#         p = multiprocessing.Process(target=say, args=(phrase,))
+#         p.start()
+#         while p.is_alive():
+#             comand = input("comando: ")
+#             if comand == "silencio" or comand == "cállate":
+#                 p.terminate()
+#                 break
+#             else:
+#                 print("Terminó el loop de escuchar..")
+
+
+# phrase = "Usar argumentos para identificar o nombrar el hilo es engorroso e innecesario. Usar argumentos para identificar o nombrar el hilo es engorroso e innecesario"
+# talk(phrase)

@@ -1,14 +1,20 @@
-# importaciones de funciones
-from modules.music import find_url, download_video, play, play_in_dir
-from modules.listen import listen, listen_light, talk
-from modules.data import Data, main_data, files, name_files
+# functions modules
+from modules.music import main_music, play_in_dir, mixer
+from modules.listen import listen, listen_light, say, engine, name
+from modules.data import Data, files, name_files, main_data_create, main_data_add, main_data_delete
 
 data_path = "C:/Users/antoi.DESKTOP-26ARF9V/OneDrive/Escritorio/AV Eve/Eve/Data"
 
-
 # python lib
+import multiprocessing
+import pygame
 import time
 import os
+
+# Music words
+close = ["cierra la música", "quita la música", "cancela"]
+resume = ["play", "reanuda", "quita el pause"]
+pause = ["silencio", "pause", "pausa"]
 
 # list words
 c_words = ["crea una lista llamada", "crea una lista con el nombre", "crea una nueva lista llamada", "crea una lista nueva con el nombre"]
@@ -28,10 +34,24 @@ now = datetime.now()
 months = ("Enero", "Febrero", "Marzo", "Abri", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre")
 
 
+def talk(rec):
+    """ Multiprocessing. to be able to cancel while talking """
+    if __name__ == "__main__":
+        p = multiprocessing.Process(target=say, args=(rec,))
+        p.start()
+        while p.is_alive():
+            comand = listen_light()
+            if comand == f"{name} silencio" or comand == f"{name} cállate":
+                p.terminate()
+                return
+        p.close()
+                
+
 def Eve():
     """ start """
     while True: 
         rec = listen()
+
 
         # File update
         for i in os.listdir(data_path):
@@ -48,16 +68,31 @@ def Eve():
                 else:
                     music = rec.replace("pon", "").strip()
 
-                talk("reproduciendo " + music)
+                say("reproduciendo " + music)
 
-                exist = play_in_dir(music)
-                if exist == True:
-                    pass
-                else:
-                    url_search = find_url(music)
-                    download_video(url_search, music)
-                    print(url_search)
-                    play(music)
+                main_music(music)
+        
+        # Pause
+        elif rec == pause[0] or rec == pause[1] or rec == pause[2]:
+            try:
+                mixer.music.pause()
+            except pygame.error:
+                say("no esta sonando nada")
+
+        # Resume
+        elif rec == resume[0] or rec == resume[1] or rec == resume[2]:
+            try:
+                mixer.music.unpause()    
+            except pygame.error:
+                say("no has puesto música")
+
+        # Music close
+        elif rec == close[0] or rec == close[1] or rec == close[2]:
+            try:
+                mixer.music.stop() 
+                mixer.quit()
+            except pygame.error:
+                say("no hay música que quitar")
 
 
         # List creation
@@ -71,60 +106,7 @@ def Eve():
             else:
                 my_list = rec.replace("crea una nueva lista llamada ", "")
 
-            # Check if it exists
-            if my_list in name_files:
-                while my_list in name_files:
-                    talk(f"ya existe un archivo con el nombre {my_list}, dime otro nombre")
-                    my_list = listen_light()
-
-            # content
-            talk(f"{my_list}, dime lo que quieres que ponga dentro")
-            while True:
-                content = listen_light()
-                while not content:
-                    content = listen_light()
-
-                if content == "cancela":
-                    talk("operación cancelada")
-                    break
-
-                Data.create(my_list, content)
-
-                # add more content
-                talk("listo, quieres agregar algo más?")
-                while True:
-                    choice = listen_light()
-                    while not choice:
-                        choice = listen_light()
-
-                    if choice == "ok" or choice == "si":                
-                        while choice == "si" or choice == "ok":
-                            talk("te escucho") 
-
-                            content = listen_light()
-                            while not content:
-                                content = listen_light() 
-
-                            Data.add(my_list, content) 
-
-                            talk("dato agregado, quieres agregar otro?")
-                            choice = listen_light()
-                            
-                        if choice == "cancela":
-                            talk("operación cancelada")
-                            break
-                        elif choice == "no":
-                            talk("operación finalizada")
-                            break
-                        else: 
-                            talk("no te he entendido, vuelve a intentarlo")
-                        
-                    elif choice == "cancela" or choice == "no":
-                        talk("operación terminada")
-                        break
-                    else: 
-                        talk("no te he entendido, vuelve a intentarlo")
-                break
+            main_data_create(my_list)
 
 
         # Add data 
@@ -141,47 +123,10 @@ def Eve():
                 my_list = rec.replace("mete datos a la lista ", "")
             
             if not my_list in name_files:
-                talk("esa lista no existe, intenta de nuevo")
+                say("esa lista no existe, intenta de nuevo")
             else:
-                talk("vale, te escucho")
-                while True:
-                    content = listen_light()
-                    while not content:
-                        content = listen_light()
-
-                    if content == "cancela":
-                        talk("operación cancelada")
-                        break
-
-                    Data.add(my_list, content)
-                    
-                    talk("dato agregado, quieres agregar otro?")
-                    
-                    while True:
-                        choice = listen_light()
-                        while not choice:
-                            choice = listen_light()
-                        
-                        if choice == "ok" or choice == "si":
-                            while choice == "si" or choice == "ok":
-                                talk("te escucho") 
-                                content = listen_light()
-
-                                Data.add(my_list, content) 
-
-                                talk("dato agregado, quieres agregar otro?")
-                                choice = listen_light()
-                            break
-                        elif choice == "cancela":
-                            talk("operación cancelada")
-                            break
-                        elif choice == "no":
-                            talk("operación finalizada")
-                            break
-                        else: 
-                            talk("no te he entendido, vuelve a intentarlo")
-                    break
-
+                main_data_add(my_list)
+                
 
         # List delete
         elif d_words[0] in rec or d_words[1] in rec or d_words[2] in rec or d_words[3] in rec:
@@ -195,57 +140,9 @@ def Eve():
                 my_list = rec.replace("elimina la lista ", "")
             
             if not my_list in name_files:
-                talk("no tengo ninguna lista con ese nombre")
+                say("no tengo ninguna lista con ese nombre")
             else:
-                talk(f"{my_list}, quieres borrarla completa o solo una parte?")
-                while True:
-                    choice = listen_light()
-
-                    if choice == "completa" or choice == "completo":
-                        Data.delete(my_list)
-
-                    elif choice == "una parte" or choice == "solo una parte":
-                        talk("ok, dime como empieza")
-                        while True:
-                            starts = listen_light()
-
-                            while not starts:
-                                starts = listen_light()
-                            
-                            # exit
-                            if starts == "cancela" or starts == "cancelar":
-                                talk("operacion cancelada")
-                                break
-
-                            exist = Data.update(my_list, starts)
-
-                            if exist == False:
-                                talk("no he conseguido ese dato dentro de la lista, vuelve a intentarlo")
-                                while exist == False:
-                                    starts = listen_light()
-                                    
-                                    exist = Data.update(my_list, starts)
-
-                                    if exist == True:
-                                        talk("eliminación completa")
-                                        break
-                                    else:
-                                        talk("no he conseguido ese dato dentro de la lista, vuelve a intentarlo")
-
-                                # exit
-                                if exist == "cancela" or exist == "cancelar":
-                                    talk("operación cancelada")
-                                    break
-                            else: 
-                                talk("eliminacion completa")
-                                break
-                            break                    
-
-                    elif choice == "cancela" or choice == "no":
-                        talk("operación cancelada")
-                    else:
-                        talk("no te he entendido, vuelve a intentarlo")
-                    break
+                main_data_delete(my_list)
 
 
         # List 
@@ -270,18 +167,18 @@ def Eve():
             try:
                 Data.read(my_list)
                 while True:
-                    talk("quieres que lo lea de nuevo?")
+                    say("quieres que lo lea de nuevo?")
                     choice = listen_light()
 
                     if choice == "si" or choice == "ok":
                         Data.read(my_list)
                     elif choice == "no" or choice == "cancela":
-                        talk("ok, saliendo")
+                        say("ok, saliendo")
                         break 
                     else:
-                        talk("no te he entendido, intenta de nuevo")
+                        say("no te he entendido, intenta de nuevo")
             except FileNotFoundError:
-                talk("no existe esa lista, intenta de nuevo")
+                say("no existe esa lista, intenta de nuevo")
             
 
         # Wikipedia searches
@@ -299,7 +196,7 @@ def Eve():
             else:
                 search = rec.replace("qué es ", "")
             
-            talk(f"cuanto quieres que te lea sobre {search}")
+            say(f"cuanto quieres que te lea sobre {search}")
             
             while True:
                 question = listen_light()
@@ -316,12 +213,20 @@ def Eve():
                 elif question == "muy poco":
                     amount = 1
                 else:
-                    talk("no te he entendido, vuelve a intentarlo")
+                    say("no te he entendido, vuelve a intentarlo")
                     
                 data = wikipedia.summary(search, sentences=amount)
-                talk(data)
-                break
 
+                try:
+                    mixer.music.set_volume(0.0)
+                    talk(data)
+                    mixer.music.set_volume(0.5)
+                except pygame.error:
+                    talk(data)
+        
+
+        # Scraping
+        
 
         # Time
         elif rec == "qué hora es" or rec == "qué dia es hoy":
@@ -331,24 +236,44 @@ def Eve():
                 month = months[now.month - 1]
                 hour = f"hoy es {now.day} de {month}"
 
-            talk(hour)
+            try:
+                mixer.music.set_volume(0.1)
+                say(hour)
+                mixer.music.set_volume(0.5)
+            except pygame.error:
+                say(hour)
         
 
         # Help
         elif rec == "qué puedes hacer":
+            try:
+                mixer.music.set_volume(0.1)
+            except pygame.error:
+                pass
             talk("""vale: 
                 puedo descargar la musica que me digas y luego reproducirla, ya una vez descargada puedes reproducirla instantaneamente en otro momento si prefieres.
                 puedo hacer las busquedas que quieras y usaré wikipedia para leerte sus conceptos, según me indiques puedo leerte mucho o poco.
                 puedo crear listas para guardar texto dentro y cuando quieras tambien puedo leertelas, agregarle mas contenido o eliminarlas si prefieres.
                 puedo hacer funciones básicas como dar la hora actual o en que dia estamos.
-             """)
+            """)
+            try:
+                mixer.music.set_volume(0.5)
+            except pygame.error:
+                pass
+
 
         # Close
         elif rec == "ciérrate":
             exit()
         
         else:
-            talk("No te he entendido. intenta de nuevo")
+            try:
+                mixer.music.set_volume(0.1)
+                say("No te he entendido. intenta de nuevo")
+                mixer.music.set_volume(0.5)
+            except pygame.error:
+                say("No te he entendido. intenta de nuevo")
+
 
 if __name__ == "__main__":
     Eve()

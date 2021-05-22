@@ -2,7 +2,7 @@ import speech_recognition as sr
 import pyttsx3
 
 # Reconocimiento de voz
-name = "alexa"
+name = "eve"
 listener = sr.Recognizer()  # Para reconocer la voz
 
 # Configuración de Voz 
@@ -11,14 +11,11 @@ voices = engine.getProperty("voices") # obtenemos una lista con todas las voces.
 engine.setProperty("voice", voices[0].id) # cambiamos la voz según el indice de la lista
 
 
-def talk(rec):
+def say(rec):
     """ Repeat what you send """
     print(rec)
     engine.say(rec)
     engine.runAndWait()
-
-def stop():
-    engine.stop()
 
 
 def listen():
@@ -30,6 +27,7 @@ def listen():
                 voice = listener.listen(source) # convierte lo que dije en un audio
                 rec = listener.recognize_google(voice, language="es-ES") # traduce lo que esta en el audio. 
                 rec = rec.lower()
+                print(rec)
                 if name in rec: # si encuentra su nombre en el audio, actuará
                     rec = rec.split(name)[1].strip() # quitamos el nombre de nuestro audio
                     print(rec)
